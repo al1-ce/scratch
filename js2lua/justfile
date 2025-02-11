@@ -1,0 +1,14 @@
+#!/usr/bin/env -S just --justfile
+# just reference  : https://just.systems/man/en/
+
+jstl_config := "" \
+    + "--no-tagArrayExpression " \
+    + "--no-debug "
+
+
+@default:
+    just --list
+
+build:
+    js2lua {{jstl_config}} test.js > test.lua
+

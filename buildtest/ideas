@@ -1,0 +1,62 @@
+
+# A task with deps
+build: ensure make cleanup
+
+# A task with code
+cleanup:
+    echo "nay"
+
+# Ditto
+ensure:
+    echo "smt"
+
+# Task with deps
+make: js css html
+
+# Task with file deps
+js: main.js
+css: default.css other.css some.css
+html: index.html app.html file.html 404.html
+
+# File linkage
+main.dart = "$src/main.dart"
+other.dart = "$src/other.dart"
+some.dart = "$src/some.dart"
+
+main.js = "$out/main.js"
+
+# File dependencies
+main.dart < other.dart some.dart
+main.js < main.dart
+
+# File make
+main.js: (dartjs main.dart main.js)
+
+# Outed
+some.dart:
+    echo "Made some.dart"
+
+# General task with args
+dartjs fin fout:
+    #!/bin/bash
+    dart compile js "$fin" -O3 -o "$fout"
+
+
+
+# Declare file which will be hashed
+file.ext = "filename.ext"
+other.ext = "other.ext"
+out.o = "outfile.o"
+
+# Set that out.o depends on file.ext (changes)
+out.o < file.ext other.ext
+
+# Set build task for file (optional)
+file.ext:
+    echo "some" >> <file.ext>
+
+# Set build task for final file
+out.o:
+    gcc <file.ext> <other.ext> -o <out.o>
+
+# vim: set filetype=conf :

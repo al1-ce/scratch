@@ -1,0 +1,5 @@
+@extern(module, "libc"):
+
+i32 printf(u8* format);
+
+

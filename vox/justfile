@@ -1,0 +1,16 @@
+#!/usr/bin/env -S just --justfile
+# just reference  : https://just.systems/man/en/
+
+@default:
+    just --list
+
+build:
+    #!/bin/bash
+    echo "Building"
+    [ ! -d build/ ] && mkdir build
+    vox --of build/main src/*.vx
+
+run: build
+    echo "Running"
+    ./build/main
+

@@ -1,0 +1,7 @@
+/// hello world test
+// import stdio;
+
+void main() {
+    // printf("hello %s!\n", "world");
+}
+

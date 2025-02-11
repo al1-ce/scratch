@@ -1,0 +1,89 @@
+#!/usr/bin/env -S just --justfile
+# just reference  : https://just.systems/man/en/
+
+set quiet
+set export
+
+# Build with pre/post tasks
+default:
+    just --list
+
+# Build with pre/post tasks
+build: ensure && all
+
+ensure:
+    - mkdir out
+
+# Reset build hashes
+clean:
+    - rm .hashes
+    - rm out -rf
+
+all: (dep "out-abc-txt")
+
+# Issue:
+# if command "fails" it'll not execute any subsequent "deps"
+# Solution?: dep: (do "_dep") ???
+# Doesnt really work
+
+src-a-txt: (file "src/a.txt")
+    echo "src/a is new"
+
+src-b-txt: (file "src/b.txt")
+    echo "src/b is new"
+
+src-c-txt: (file "src/c.txt")
+    echo "src/c is new"
+    echo "astuff" > src/c.txt
+
+out-ab-txt: (dep "src-a-txt") (dep "src-b-txt")
+    echo "src/a or b is new"
+    cat "src/a.txt" > out/ab.txt
+    cat "src/b.txt" >> out/ab.txt
+
+out-abc-txt: (dep "out-ab-txt") (dep "src-c-txt")
+    echo "src/ab or c is new"
+    cat "out/ab.txt" > out/abc.txt
+    cat "src/c.txt" >> out/abc.txt
+
+# - ---------------------------------------------------------------------------- -
+
+[private]
+dep fname: (do fname)
+
+[private]
+file fname: (on fname) && (store fname)
+
+# - ---------------------------------------------------------------------------- -
+# -                                 Make system                                  -
+# - ---------------------------------------------------------------------------- -
+
+# <<< EXAMPLE >>>
+# file-ext: (target "path_in" "path_out")
+#
+# [private]
+# target fin fout: (do "_target" fin fout)
+#
+# _target fin fout: (on fin) && (store fin)
+#     - echo "COMMAND"
+# <<< EXAMEND >>>
+
+# Executes just command as dependency
+[private]
+do +args:
+    - just $args
+
+# Don't forget to add '.hashes' to gitignore
+# Allows task to be executed if $file changed
+[private, no-exit-message, positional-arguments]
+on file:
+    #!/usr/bin/env bash
+    [ ! -f .hashes ] && touch .hashes
+    [[ "$(md5sum "$file" | head -c 32)" == "$(grep " ${file}$" .hashes | head -c 32)" ]] && exit 1 || exit 0
+
+# Stores hash of $file
+[private, no-exit-message]
+store file: (on file)
+    #!/usr/bin/env bash
+    echo "$(grep -v " ${file}$" .hashes)" > .hashes && md5sum "$file" >> .hashes
+

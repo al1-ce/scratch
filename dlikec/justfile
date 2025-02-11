@@ -1,0 +1,15 @@
+#!/usr/bin/env -S just --justfile
+# just reference  : https://just.systems/man/en/
+
+@default:
+    just --list
+
+@build:
+    # [ -f dub.selections.json ] && rm dub.selections.json
+    dub build
+
+@run: build
+    echo ------------------------------------------
+    ./bin/dlikec
+    echo ------------------------------------------
+

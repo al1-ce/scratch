@@ -1,0 +1,9 @@
+#!/usr/bin/env -S just --justfile
+# just reference  : https://just.systems/man/en/
+
+@default:
+    echo "Clearing $PWD"
+    find . -not -name 'justfile' -delete
+    echo "Done. Directory listing:"
+    eza -la
+

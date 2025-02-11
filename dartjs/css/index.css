@@ -1,0 +1,37 @@
+:root {
+    --c-main: white;
+    --c-alt: red;
+    --c-available: springgreen;
+    --c-unavailable: red;
+    --c-background: #000000;
+
+    /* --f-vga: "Perfect DOS VGA 437"; */
+    /* --f-zpix: "Zpix"; */
+
+    /* --f-main: var(--f-zpix); */
+    /* --f-size: 14px; */
+
+    --f-main: "Mono";
+    --f-size: 14px;
+}
+
+body {
+    font: var(--f-size) var(--f-main);
+    color: var(--c-main);
+    background: var(--c-background);
+}
+
+a {
+    text-decoration: none;
+}
+
+a:link,
+a:visited {
+    color: var(--c-alt);
+}
+
+a:hover,
+a:active {
+    color: var(--c-main);
+}
+

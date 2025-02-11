@@ -1,0 +1,30 @@
+#!/usr/bin/env -S just --justfile
+# just reference  : https://just.systems/man/en/
+
+# Build current file
+file RELPATH:
+    @dart compile js --no-source-maps --omit-implicit-checks -O4 src/$(basename {{RELPATH}}) -o js/$(basename -s .dart {{RELPATH}}).js
+    @echo "------------------------------------"
+    @cat js/$(basename -s .dart {{RELPATH}}).js | wc -l
+
+# Build all files
+build:
+    #!/bin/bash
+    rm js/*
+    ls src/ | grep -e ".*\.dart" | sed "s/\..*//" | while read line
+    do
+        dart compile js "src/$line.dart" -o "js/$line.js"
+    done
+
+RELEASE_FLAGS := "-O4 --no-source-maps"
+
+# Build with O3 and no debug files
+release:
+    #!/bin/bash
+    rm js/*
+    ls src/ | grep -e ".*\.dart" | sed "s/\..*//" | while read line
+    do
+        dart compile js "src/$line.dart" -o "js/$line.js" {{RELEASE_FLAGS}}
+    done
+    rm js/*.deps
+
