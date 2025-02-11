@@ -1,0 +1,263 @@
+// a tag having only a name
+my_tag
+
+// three tags acting as name value pairs
+first_name "Akiko"
+last_name "Johnson"
+height 68
+
+// a tag with a value list
+person "Akiko" "Johnson" 68
+
+// a tag with attributes
+person first_name="Akiko" last_name="Johnson" height=68
+
+// a tag with values and attributes
+person "Akiko" "Johnson" height=60
+
+// a tag with attributes using namespaces
+person name:first-name="Akiko" name:last-name="Johnson"
+
+// a tag with values, attributes, namespaces, and children
+my_namespace:person "Akiko" "Johnson" dimensions:height=68 {
+    son "Nouhiro" "Johnson"
+    daughter "Sabrina" "Johnson" location="Italy" {
+        hobbies "swimming" "surfing"
+        languages "English" "Italian"
+        smoker false
+    }
+}
+
+namespace:name property=value argument {
+    child
+}
+
+namespace:name arg1 arg2 \
+    arg3 arg4; new_node arg { child1; child2 }
+
+namespace:name arg1 arg2 \
+arg3 arg4; new_node arg { child1; child2 }
+
+------------------------------------------------------------------
+// (notice the separator style comment above...)
+
+// a log entry
+//     note - this tag has two values (date_time and string) and an
+//            attribute (error)
+entry 2005/11/23 10:14:23.253-GMT "Something bad happened" error=true
+
+entry /-2005/11/23 10:14:23.253-GMT "Something bad happened" error=true
+
+// a long line
+mylist "something" "another" true "shoe" 2002/12/13 "rock" \
+    "morestuff" "sink" "penny" 12:15:23.425
+
+// a long string
+text "this is a long rambling line of text with a continuation \
+   and it keeps going and going..."
+
+// anonymous tag examples
+
+files {
+    "/folder1/file.txt"
+    "/file2.txt"
+}
+
+matrix {
+    1 2 3
+    4 5 6
+}
+
+node 1 2 \ // comments are allowed
+     3 4   // after \
+
+node 1 2 \ -- comments are allowed
+     3 4   -- after \
+
+node 1 2 \ # comments are allowed
+     3 4   # after \
+
+node "my broken \ // will become
+      string"     // "my broken string"
+
+node `raw string \ // no comments
+with line break // no comments
+`
+
+/-this_node is "commented" out {
+    completely
+} asdasd as d as d
+
+aaa
+only /-124.4f is commented out
+only /-this="property" /-124.4f is commented out
+
+only /-"this string" is commented out
+
+only /-this="property" /-124.4f is commented out
+
+only /-this="property \ // comment lol
+    here is" /-124.4f is commented out
+
+only children /-{
+    are
+    commented out
+} asd
+
+incorrect syntax/-{
+
+}
+
+only /-`this value is
+ignored` test
+
+only /-prop=`this value is
+ignored` test
+
+-- And even more line comments
+
+# Another single line comment
+
+// Single line comment
+/* A multi-line comment
+Which is spanning
+... multiple lines */
+
+/* A multi-line comment */
+Which is spanning
+... multiple lines */
+
+
+/+A nesting /+ multiline +/
+comment
++/
+
+key [sdf789GSfsb2+3324sf2] name="my key"
+image [
+    R3df789GSfsb2edfSFSDF
+    uikuikk2349GSfsb2edfS
+    vFSDFR3df789GSfsb2edf
+]
+upload from="some.web" data=[
+    R3df789GSfsb2edfSFSDF
+    uikuikk2349GSfsb2edfS
+    vFSDFR3df789GSfsb2edf
+]
+
+date test {
+    2014-12-05
+    2010-07-04T07:06:12
+    01.12.2005
+    01.12.05
+    05/12/2005
+    2005/12/05 05:21:23.532-JST
+    2005/12/05 05:21:23.532-UTC
+    2005/12/05 \a
+    - 12:14:42 (12 hours, 14 minutes, 42 seconds)
+    - 00:09:12 (9 minutes, 12 seconds)
+    - 00:00:01.023 (1 second, 23 milliseconds)
+    - 23d:05:21:23.532 (23 days, 5 hours, 21 minutes, 23 seconds, 532 milliseconds)
+    - -23d:05:21:23.532 (23 days, 5 hours, 21 minutes, 23 seconds, 532 milliseconds)
+    child {
+        one two {
+            three four
+        }
+    }
+}
+
+number test {
+    123
+    123L
+    123l
+    123.45f
+    123.45F
+    123.45
+    123.45d
+    123.45D
+    123.45BD
+    123.45bd
+}
+
+"a\'d\"v\?b\\a\0s\ad\bd\fa\ns\rw\tf\vw\xA4k\1k\101k\U0001F603k\u03B3k\&euro;k"
+
+node property=literal_string:with_namespace
+
+node `this is a
+multiline
+    string` property
+
+node "this is quoted single-line string"
+
+node "this is quoted \
+      multiline string"
+
+1 2 3 type="list"
+
+3 matrix {
+    // anonymous lists
+    0 1 0
+    1 0 0
+    1 1 1
+}
+
+// This is illegal:
+// value=4
+// Because it can be confused with:
+// value 4
+
+node {
+    child_node1
+    child_node2
+    1 2 3 // anonymous node list
+}
+
+node type="item" inherit=abstract:pickup_item stack:count=6 enabled !empty !over:here
+
+node prop="not this one" prop="not this one either" prop="now prop is this current string"
+
+node 1 2 "string" true false null 12:05:41 on off 1 32.5
+
+namespace:name property=value argument {
+    child
+}
+
+namespace:name arg1 arg2 \
+    arg3 arg4; new_node arg { child1; child2 }
+
+node {
+    child "}"
+}
+list 0 1 2
+
+folder "myFiles" color="yellow" protection {
+    folder "my images" {
+        // equivalent to having srgb=true
+        file "myHouse.jpg" srgb date=2005/11/05
+        // equivalent to having srgb=false
+        // alternative date format
+        file "myCar.jpg" !srgb date=05.11.2005
+    }
+    folder "my documents" {
+        document "resume.pdf"
+    }
+}
+
+myMatrix {
+   4  2  5 // each line is an
+   2  8  2 // anonymous node
+   4  2  1 // containing a list
+}
+
+plants {
+    trees {
+        deciduous {
+            elm // nodes with
+            oak // no properties
+        }
+    }
+}
+
+pets chihuahua="small" dalmation="hyper" mastiff="big"
+
+numbers 12 53 2 635
+

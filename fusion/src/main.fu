@@ -1,0 +1,23 @@
+// Fusion test
+
+#if d
+    native {module hellofu;}
+#endif
+
+public class HelloFu {
+    /// Return hello message
+    public string GetMessage() {
+        #if d
+            native {
+            import std.stdio;
+            writeln("This is a D injection!");
+            }
+        #elif js
+            native {
+            console.log("This is a JS injection!");
+            }
+        #endif
+        return "Hello World!";
+    }
+}
+

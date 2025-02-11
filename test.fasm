@@ -1,0 +1,47 @@
+# clear reg
+clr
+# init counter
+mov r16 1
+
+:loop
+# find (fid r1 red ...)
+fir r1 [virtual-signal=signal-C]
+# if clock reset
+# goto add_stone
+teq r1 0
+jmp :add_stone
+:continue
+add r9 r5 r6
+add r10 r7 r8
+# calc average
+add r4 r9 r10
+div r3 r4 4
+# set output type
+sst r3 [virtual-signal=signal-C]
+# set output
+mov out1 r3
+# backup current value
+mov r2 r1
+# wait a frame (for better clock control)
+slp 1
+jmp :loop
+
+:add_stone
+# if val is 0 then exit
+teq r2 0
+jmp :continue
+# move registers
+teq r16 1
+mov r5 r2
+teq r16 2
+mov r6 r2
+teq r16 3
+mov r7 r2
+teq r16 4
+mov r8 r2
+# reset counter
+inc r16
+teq r16 5
+mov r16 1
+jmp :continue
+

@@ -1,0 +1,11 @@
+#!/usr/bin/env -S just --justfile
+# just reference  : https://just.systems/man/en/
+
+@default:
+    just --list
+
+build:
+    @-test ! -d build && mkdir build
+    haxe --lua build/main.lua -p src/ src/Main.hx
+    haxe --js build/main.js -p src/ src/Main.hx
+

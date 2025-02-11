@@ -1,0 +1,3 @@
+-p src/
+--js js
+--lua lua

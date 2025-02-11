@@ -1,0 +1,9 @@
+name "test"
+description "Fusion lang test"
+
+sourcePaths "src/"
+importPaths "src/"
+
+targetType "executable"
+targetPath "bin/"
+

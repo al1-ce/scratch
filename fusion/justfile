@@ -1,0 +1,59 @@
+#!/usr/bin/env -S just --justfile
+# just reference  : https://just.systems/man/en/
+
+# List available recipes
+@list:
+    echo ""
+    echo "Available Recipes at"
+    echo "$PWD"
+    echo "are:"
+    echo ""
+    just -l --list-prefix 'just ' --list-heading ''
+    echo ""
+    echo "just <module_name> to see sub-tasks"
+    echo ""
+
+# Show help/usage for "just" command
+@help: list
+    just --help
+
+@default: help
+    echo ""
+
+build: && \
+       (compile "c"    ) \
+       (compile "cpp"  ) \
+       (compile "cs"   ) \
+       (compile "d"    ) \
+       (compile "java" ) \
+       (compile "js"   ) \
+       (compile "py"   ) \
+       (compile "swift") \
+       (compile "ts"   )
+    #!/usr/bin/env bash
+    # set -xe
+    test -d out || mkdir out
+    # rm -rf out/*
+    # exit 0
+
+[private]
+compile lang:
+    #!/usr/bin/env bash
+    set -xe
+
+    test -d out/{{lang}} || mkdir out/{{lang}}
+    test -d out/{{lang}}/src || mkdir out/{{lang}}/src
+    test -f out/{{lang}}/.ignore_project || touch out/{{lang}}/.ignore_project
+
+    if [ ! -f out/{{lang}}/justfile ]; then
+        touch out/{{lang}}/justfile
+        echo "#!/usr/bin/env -S just --justfile" >> out/{{lang}}/justfile
+        echo "# just reference  : https://just.systems/man/en/" >> out/{{lang}}/justfile
+        echo "" >> out/{{lang}}/justfile
+        echo "@default:" >> out/{{lang}}/justfile
+        echo "    just --list" >> out/{{lang}}/justfile
+        echo "" >> out/{{lang}}/justfile
+    fi
+
+    fut -o out/{{lang}}/src/main.{{lang}} src/main.fu -D {{lang}}
+
