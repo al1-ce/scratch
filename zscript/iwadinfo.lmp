@@ -1,0 +1,20 @@
+IWAD
+{
+	Name         = "ZScript Discovery"
+	BannerColors = "dea840", "003d59"
+	Autoname     = "ZScriptDiscovery"
+	Game         = "Doom"
+	Config       = "ZScriptDiscovery"
+	IWADName     = "ZScriptDiscovery.ipk3"
+	Mapinfo      = "mapinfo/mindefaults.txt"
+}
+Clip AMMOA0
+Shell SBOXA0
+RocketAmmo BROKA0
+Cell CELPA0
+texture
+HEalth
+switch doom 1 SW1BRCOM on pic SW2BRCOM tics 0
+switch hexen SW51_OFF on sound Switch2 pic SW51_ON tics 0
+switch strife GLASS01 on sound world/glassbreak pic GLASS02 tics 0
+switch strife DORWS04 on sound switches/bolt pic DORWS05 tics 0 off sound switches/boltback pic DORWS04 tics 0
