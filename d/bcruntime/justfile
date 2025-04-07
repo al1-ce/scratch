@@ -1,0 +1,60 @@
+#!/usr/bin/env -S just --justfile
+# just reference  : https://just.systems/man/en/
+
+SRCDIR := "./src"
+
+OBJDIR := "./build"
+BINDIR := "./bin"
+
+LIBDIR := "/g/al1-ce/bcd"
+
+SOURCES := shell("find $1 -type f -name '*.d' -printf '%p '", SRCDIR)
+BINARY := BINDIR / "test"
+
+DFLAGS := "-I" + LIBDIR + "/src" + " -L" + LIBDIR + "/bin/libbcd.a"
+
+@default: all
+    # just --list
+
+@bindir:
+    - [ ! -d "{{BINDIR}}" ] && mkdir {{BINDIR}}
+
+@objdir:
+    - [ ! -d "{{OBJDIR}}" ] && mkdir {{OBJDIR}}
+
+runtime_dmd:
+    cd {{LIBDIR}} && just clean dmd
+
+runtime_ldc:
+    cd {{LIBDIR}} && just clean ldc
+
+app_dmd: bindir runtime_dmd
+    dmd -defaultlib= {{DFLAGS}} {{SOURCES}} -of={{BINARY}}
+
+app_ldc: bindir runtime_ldc
+    ldc -defaultlib= -oq {{DFLAGS}} {{SOURCES}} -of={{BINARY}} -od={{OBJDIR}}
+
+# app_gdc: bindir runtime_gdc
+#     gdc  -I{{LIBDIR}} --verbose -nophoboslib -Wno-builtin-declaration-mismatch {{SOURCES}} -o {{BINARY}} -L{{OBJDIR}} -l:runtime.a -Wall -Wextra
+
+dmd: clean app_dmd run && test
+
+ldc: clean app_ldc run && test
+
+# gdc: clean app_gdc run && test
+
+all: dmd && ldc
+    @echo ""
+
+build: all
+
+@clean:
+    rm -rf {{BINDIR}}
+    rm -rf {{OBJDIR}}
+
+@run:
+    ./{{BINARY}}
+
+test:
+    valgrind --leak-check=full ./{{BINARY}}
+
