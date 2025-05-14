@@ -1,0 +1,15 @@
+name "tch"
+description "Imageboard viewer"
+authors "Alisa Lain"
+copyright "Copyright © 2023, Alisa Lain"
+license "GPL3"
+dependency "sily" path="/g/sily-dlang" // version="~>3.0.0"
+dependency "sily-terminal" path="/g/sily-terminal" // version="~>1.2.1"
+dependency "sily-terminal:tui" path="/g/sily-terminal" // version="~>1.2.1"
+dependency "sily-web:html" path="/g/sily-web" // version="~>0.0.2"
+
+sourcePaths "src/"
+importPaths "src/"
+
+targetType "executable"
+targetPath "bin/"

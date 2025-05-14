@@ -1,0 +1,16 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/tch
+tch.so
+tch.dylib
+tch.dll
+tch.a
+tch.lib
+tch-test-*
+*.exe
+*.pdb
+*.o
+*.obj
+*.lst
